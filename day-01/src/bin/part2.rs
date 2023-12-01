@@ -1,10 +1,18 @@
 use std::collections::HashMap;
 
+use lazy_static::lazy_static;
 use regex::Regex;
 
 fn solve(input: &str) -> u32 {
-    let re_front = Regex::new(r#"[0-9]|one|two|three|four|five|six|seven|eight|nine"#).unwrap();
-    let re_back = Regex::new(r#"[0-9]|eno|owt|eerht|ruof|evif|xis|neves|thgie|enin"#).unwrap();
+    lazy_static! {
+        static ref RE_FRONT: Regex =
+            Regex::new(r#"[0-9]|one|two|three|four|five|six|seven|eight|nine"#).unwrap();
+    }
+    lazy_static! {
+        static ref RE_BACK: Regex =
+            Regex::new(r#"[0-9]|eno|owt|eerht|ruof|evif|xis|neves|thgie|enin"#).unwrap();
+    }
+
     let str_map: HashMap<&str, u32> = HashMap::from([
         ("one", 1),
         ("two", 2),
@@ -39,8 +47,9 @@ fn solve(input: &str) -> u32 {
         .lines()
         .map(|line| {
             let reversed_line: String = line.chars().rev().collect();
-            let first_digit = str_map[re_front.find(line).unwrap().as_str()];
-            let last_digit = str_map[re_back.find(&reversed_line).unwrap().as_str()];
+            let first_digit = str_map[RE_FRONT.find(line).unwrap().as_str()];
+            let last_digit = str_map[RE_BACK.find(&reversed_line).unwrap().as_str()];
+
             first_digit * 10 + last_digit
         })
         .sum();
