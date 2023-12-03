@@ -9,7 +9,7 @@ fn solve(input: &str) -> u32 {
     for row in 0..height {
         for col in 0..width {
             let item = grid[row * width + col];
-            if item == '.' || item.is_digit(10) {
+            if item == '.' || item.is_ascii_digit() {
                 continue;
             }
             for i in row - 1..row + 2 {
@@ -17,12 +17,12 @@ fn solve(input: &str) -> u32 {
                     if i == j && j == 1 {
                         continue;
                     }
-                    if grid.get((i * width) + j).unwrap().is_digit(10)
+                    if grid.get((i * width) + j).unwrap().is_ascii_digit()
                         && !number_grid[i * width + j]
                     {
                         let mut tmp_j = j;
                         let mut start_j = j;
-                        while grid[i * width + tmp_j].is_digit(10) {
+                        while grid[i * width + tmp_j].is_ascii_digit() {
                             start_j = tmp_j;
                             if tmp_j == 0 {
                                 break;
@@ -33,7 +33,7 @@ fn solve(input: &str) -> u32 {
                         let mut num = 0;
                         tmp_j = start_j;
                         while tmp_j < width {
-                            if !grid[i * width + tmp_j].is_digit(10) {
+                            if !grid[i * width + tmp_j].is_ascii_digit() {
                                 break;
                             }
                             number_grid[i * width + tmp_j] = true;
