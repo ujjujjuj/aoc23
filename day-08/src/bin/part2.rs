@@ -1,5 +1,15 @@
 use std::{collections::HashMap, ops::ControlFlow};
-use num::integer::lcm;
+
+fn gcd(a: u64, b: u64) -> u64 {
+    if b == 0 {
+        return a;
+    }
+    gcd(b, a % b)
+}
+
+fn lcm(a: u64, b: u64) -> u64 {
+    a * b / gcd(a, b)
+}
 
 fn solve(input: &str) -> u64 {
     let mut lines = input.lines();
@@ -21,6 +31,7 @@ fn solve(input: &str) -> u64 {
         .filter(|&&node| node.chars().last().unwrap() == 'A')
         .map(|node| (*node))
         .collect::<Vec<&str>>();
+    
     let mut cycle_lens = vec![];
     for mut curr in start_nodes {
         let mut moves = 0;
@@ -40,7 +51,7 @@ fn solve(input: &str) -> u64 {
         cycle_lens.push(moves as u64);
     }
 
-    cycle_lens.into_iter().fold(1, |acc, cycle| lcm(acc,cycle))
+    cycle_lens.into_iter().fold(1, |acc, cycle| lcm(acc, cycle))
 }
 fn main() {
     let input = include_str!("../inputs/part2.txt");
